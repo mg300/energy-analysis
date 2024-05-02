@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.Arrays;
+
 public class Main {
     public static void main(String[] args) {
         InputManager patternFileManager = new FileHandlerInput("2023.12.27-roszkow-powercurve - wzorcowa.ods");
@@ -11,9 +13,21 @@ public class Main {
 //        List<Double> windSpeedActtual=new ArrayList<>();
 //        List<Double> windKWActual=new ArrayList<>();
         double[] windSpeedPattern = patternProcessor.getColumnData(1);
-        for (double item : windSpeedPattern){
-            System.out.print(item+", ");
-        }
+        double[] KWPattern = patternProcessor.getColumnData(2);
+        double[] windSpeedActual= actualProcessor.getColumnData(1);
+        double[] KWActual = actualProcessor.getColumnData(2);
+
+        Interpolator interpolator = new Interpolator();
+        double[] patternX=interpolator.getNewPrecision();
+        double[] patternY = interpolator.interpolate(windSpeedPattern,KWPattern);
+        double[] actualX = windSpeedActual;
+        double[] actualY = KWActual;
+
+        System.out.println(Arrays.toString(patternX));
+        System.out.println(Arrays.toString(patternY));
+
+
+
 
 
 
