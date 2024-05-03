@@ -14,3 +14,9 @@ Program zwiększa dokładność wykresu poprzez zmiane dokładności wzorca.
 3. Dopasowanie danych rzeczywistych do danych wzorcowych. W przypadku większej ilości danych rzeczywistych odpowiadających wartościom wzorcowym wyciągana jest średnia.
 4. Generowanie raportu: Raport2.xlsx
 5. Konwersja typu do: Raport2.ods
+
+### Dependencies
+
+- jopendocument
+- apache poi
+- apache commons
