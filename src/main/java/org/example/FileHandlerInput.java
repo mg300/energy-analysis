@@ -22,32 +22,25 @@ public class FileHandlerInput implements InputManager {
         }
     }
 
-    public float readCell(int indexCol, int indexRow) {
+    public double readCell(int indexCol, int indexRow) {
         indexRow--;
         indexCol--;
         Cell<?> cell = sheet.getImmutableCellAt(indexCol, indexRow);
         BigDecimal cellValue = (BigDecimal) cell.getValue();
-        return cellValue.floatValue();
+        return cellValue.doubleValue();
     }
-    public String readTariffName(int indexCol){
+    public String readCellTypeString(int indexCol, int indexRow) {
+        indexRow--;
         indexCol--;
-        Cell<?> cell = sheet.getImmutableCellAt(indexCol, 2);
-        return cell.getValue().toString();
+        Cell<?> cell = sheet.getImmutableCellAt(indexCol, indexRow);
+        Object cellValue = cell.getValue();
+        return cellValue.toString();
     }
-    public String readTitle(){
-        Cell<?> cell = sheet.getImmutableCellAt(0, 0);
-        return cell.getValue().toString();
-    }
-    public String readPlace(){
-        Cell<?> cell = sheet.getImmutableCellAt(1, 1);
-        return cell.getValue().toString();
-    }
-
 
     public int getCountOfRowsWithData(int indexCol) {
         int rowCount = 0;
         indexCol--;
-        for (int indexRow = 0; indexRow < 4096; indexRow++) {
+        for (int indexRow = 0; indexRow < 50000; indexRow++) {
             Cell<?> cell = sheet.getImmutableCellAt(indexCol, indexRow);
             if(!cell.isEmpty()){
                 if(Objects.equals(cell.getValueType().toString(), "FLOAT")){
@@ -58,11 +51,24 @@ public class FileHandlerInput implements InputManager {
 
         }
         return rowCount;
+    }    public int getCountOfRowsWithString(int indexCol) {
+        int rowCount = 0;
+        indexCol--;
+        for (int indexRow = 0; indexRow < 50000; indexRow++) {
+            Cell<?> cell = sheet.getImmutableCellAt(indexCol, indexRow);
+            if(!cell.isEmpty()){
+                if(Objects.equals(cell.getValueType().toString(), "STRING")){
+                    rowCount++;
+                }
+            }
+
+        }
+        return rowCount;
     }
     public int getNumOfFirstRowWithData(int indexCol) {
         int rowStart = 1;
         indexCol--;
-        for (int indexRow = 0; indexRow < 4096; indexRow++) {
+        for (int indexRow = 0; indexRow < 50000; indexRow++) {
             Cell<?> cell = sheet.getImmutableCellAt(indexCol, indexRow);
             if(!cell.isEmpty()){
                 if(Objects.equals(cell.getValueType().toString(), "FLOAT")){

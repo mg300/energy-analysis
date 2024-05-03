@@ -1,35 +1,26 @@
 package org.example;
 
-import java.util.Arrays;
-
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         InputManager patternFileManager = new FileHandlerInput("2023.12.27-roszkow-powercurve - wzorcowa.ods");
         InputManager actualFileManager = new FileHandlerInput("2023.12.27-roszkow-trend.ods");
         DataProcessor patternProcessor = new DataProcessor(patternFileManager);
         DataProcessor actualProcessor = new DataProcessor(actualFileManager);
-//        List<Double> windSpeedPattern = new ArrayList<>();
-//        List<Double> KWPattern=new ArrayList<>();
-//        List<Double> windSpeedActtual=new ArrayList<>();
-//        List<Double> windKWActual=new ArrayList<>();
-        double[] windSpeedPattern = patternProcessor.getColumnData(1);
-        double[] KWPattern = patternProcessor.getColumnData(2);
-        double[] windSpeedActual= actualProcessor.getColumnData(1);
-        double[] KWActual = actualProcessor.getColumnData(2);
+
+        double[] patternWindSpeed = patternProcessor.getColumnData(1);
+        double[] patternKW = patternProcessor.getColumnData(2);
+        double[] actualWindSpeed = actualProcessor.getColumnData(2);
+        double[] actualKW = actualProcessor.getColumnData(3);
+
+        SheetGenerator sheetGenerator = new SheetGenerator(patternWindSpeed,patternKW, actualWindSpeed,actualKW);
+        sheetGenerator.generate("Raport");
 
         Interpolator interpolator = new Interpolator();
-        double[] patternX=interpolator.getNewPrecision();
-        double[] patternY = interpolator.interpolate(windSpeedPattern,KWPattern);
-        double[] actualX = windSpeedActual;
-        double[] actualY = KWActual;
 
-        System.out.println(Arrays.toString(patternX));
-        System.out.println(Arrays.toString(patternY));
-
-
-
-
-
+        double[] patternX = interpolator.getNewPrecision();
+        double[] patternY = interpolator.interpolate(patternWindSpeed, patternKW);
+        sheetGenerator = new SheetGenerator(patternX,patternY, actualWindSpeed,actualKW);
+        sheetGenerator.generate("Raport2");
 
     }
 }
